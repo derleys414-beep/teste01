@@ -1,28 +1,22 @@
-import { supabase } from '@/lib/supabase';
+import { request } from '@/lib/http';
 import type { AccountRow, AccountStatus } from '@/types';
 
+type Me = { status: AccountStatus; is_admin: boolean };
+
 export async function fetchOwnAccountStatus(): Promise<AccountStatus> {
-  const { data, error } = await supabase.from('profiles').select('status').maybeSingle<{ status: AccountStatus }>();
-  if (error) throw error;
-  if (!data) throw new Error('Não foi possível carregar o status da sua conta.');
-  return data.status;
+  return (await request<Me>('GET', 'me')).status;
 }
 
 export async function checkPlatformAdmin(): Promise<boolean> {
-  const { data, error } = await supabase.rpc('is_platform_admin');
-  if (error) throw error;
-  return data === true;
+  return (await request<Me>('GET', 'me')).is_admin;
 }
 
-export async function fetchAccounts(): Promise<AccountRow[]> {
-  const { data, error } = await supabase.rpc('admin_list_accounts');
-  if (error) throw error;
-  return (data ?? []) as AccountRow[];
+export function fetchAccounts(): Promise<AccountRow[]> {
+  return request<AccountRow[]>('GET', 'admin/accounts');
 }
 
 export async function setAccountStatus(userId: string, status: AccountStatus): Promise<void> {
-  const { error } = await supabase.rpc('admin_set_account_status', { target: userId, new_status: status });
-  if (error) throw toAccountStatusError(error);
+  await request('PATCH', `admin/accounts/${encodeURIComponent(userId)}`, { status });
 }
 
 export function hasCompletedUsageMonth(account: AccountRow): boolean {
@@ -31,11 +25,4 @@ export function hasCompletedUsageMonth(account: AccountRow): boolean {
 
 export function formatUsageMonths(months: number): string {
   return `+${months} ${months === 1 ? 'mês' : 'meses'} de uso`;
-}
-
-function toAccountStatusError(error: { code?: string; message: string }): Error {
-  if (error.code === '42501') return new Error('Apenas o administrador pode alterar o status das contas.');
-  if (error.code === '22023') return new Error('Não é possível alterar o próprio status.');
-  if (error.code === 'P0002') return new Error('Conta não encontrada. Atualize a página e tente novamente.');
-  return new Error(error.message);
 }
