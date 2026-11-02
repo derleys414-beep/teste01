@@ -25,7 +25,7 @@ function App() {
   if (session === undefined) return <LoadingState />;
   if (session === null) return <AuthScreen />;
 
-  return <SignedInApp userId={session.user.id} userEmail={session.user.email ?? ''} />;
+  return <SignedInApp userId={session.id} userEmail={session.email ?? ''} />;
 }
 
 function SignedInApp({ userId, userEmail }: { userId: string; userEmail: string }) {

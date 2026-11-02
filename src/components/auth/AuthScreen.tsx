@@ -54,7 +54,7 @@ export function AuthScreen() {
       } else {
         const hasSession = await signUp(trimmedEmail, password);
         if (!hasSession) {
-          setNotice('Conta criada. Entre com seu e-mail e senha para continuar.');
+          setNotice('Conta criada. Confirme pelo link enviado ao seu e-mail e depois entre.');
           setMode('signin');
           setPassword('');
         }

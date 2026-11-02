@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react';
-import type { Session } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { getUser, handleAuthCallback, onAuthChange, type User } from '@netlify/identity';
 
-// Session is undefined while the stored session is still being read.
-export function useSession(): Session | null | undefined {
-  const [session, setSession] = useState<Session | null | undefined>(undefined);
+// User is undefined while the stored session is still being read.
+export function useSession(): User | null | undefined {
+  const [user, setUser] = useState<User | null | undefined>(undefined);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((_event, next) => {
-      setSession(next);
+    let active = true;
+    const unsubscribe = onAuthChange((_event, next) => {
+      if (active) setUser(next);
     });
-    return () => data.subscription.unsubscribe();
+    // Processes email-confirmation links (#confirmation_token=...) before reading the session.
+    handleAuthCallback()
+      .catch(() => null)
+      .then(() => getUser())
+      .then((current) => {
+        if (active) setUser(current);
+      });
+    return () => {
+      active = false;
+      unsubscribe();
+    };
   }, []);
 
-  return session;
+  return user;
 }
