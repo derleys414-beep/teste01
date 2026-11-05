@@ -15,7 +15,7 @@ const NAV_ITEMS: { id: PageId; label: string; icon: LucideIcon }[] = [
 
 function navItemClass(active: boolean) {
   return `group relative flex shrink-0 items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200 ${
-    active ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'
+    active ? 'bg-white text-brand-700 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'
   }`;
 }
 
@@ -58,7 +58,7 @@ export function AppShell({
                 aria-current={active ? 'page' : undefined}
                 className={navItemClass(active)}
               >
-                <Icon className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${active ? 'text-indigo-600' : 'text-slate-400'}`} />
+                <Icon className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${active ? 'text-brand-600' : 'text-slate-400'}`} />
                 {item.label}
               </button>
             );
@@ -70,7 +70,7 @@ export function AppShell({
               aria-current={adminActive ? 'page' : undefined}
               className={navItemClass(adminActive)}
             >
-              <ShieldCheck className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${adminActive ? 'text-indigo-600' : 'text-slate-400'}`} />
+              <ShieldCheck className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${adminActive ? 'text-brand-600' : 'text-slate-400'}`} />
               Painel Admin
             </button>
           )}

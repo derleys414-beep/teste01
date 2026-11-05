@@ -85,7 +85,7 @@ export function ReportsPage() {
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <SummaryCard label="Faturamento" value={formatBRL(totals.revenue)} />
-        <SummaryCard label="Lucro real" value={formatBRL(totals.profit)} accent="indigo" />
+        <SummaryCard label="Lucro real" value={formatBRL(totals.profit)} accent="profit" />
         <SummaryCard label="Margem média" value={formatPct(totals.marginPct)} accent="teal" />
       </section>
 
@@ -118,8 +118,8 @@ export function ReportsPage() {
   );
 }
 
-function SummaryCard({ label, value, accent }: { label: string; value: string; accent?: 'indigo' | 'teal' }) {
-  const tone = accent === 'indigo' ? 'text-indigo-600' : accent === 'teal' ? 'text-teal-600' : 'text-slate-900';
+function SummaryCard({ label, value, accent }: { label: string; value: string; accent?: 'profit' | 'teal' }) {
+  const tone = accent === 'profit' ? 'text-emerald-600' : accent === 'teal' ? 'text-teal-600' : 'text-slate-900';
   return (
     <Card className="p-6">
       <p className="text-sm font-medium text-slate-500">{label}</p>
@@ -167,7 +167,7 @@ function SalesTable({
                 <td className="px-4 py-4 text-slate-600">{channelName(sale.channel_id)}</td>
                 <td className="px-4 py-4 text-right tabular-nums text-slate-600">{formatInt(sale.quantity)}</td>
                 <td className="px-4 py-4 text-right tabular-nums text-slate-700">{formatBRL(totals.revenue)}</td>
-                <td className={`px-4 py-4 text-right font-medium tabular-nums ${totals.profit < 0 ? 'text-rose-600' : 'text-indigo-700'}`}>
+                <td className={`px-4 py-4 text-right font-medium tabular-nums ${totals.profit < 0 ? 'text-rose-600' : 'text-emerald-700'}`}>
                   {formatBRL(totals.profit)}
                 </td>
                 <td className="px-4 py-4 text-right tabular-nums text-slate-600">{formatPct(totals.marginPct)}</td>

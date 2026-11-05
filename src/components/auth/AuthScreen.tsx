@@ -118,7 +118,7 @@ export function AuthScreen() {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             {copy.switchLabel}{' '}
-            <button type="button" onClick={switchMode} className="font-medium text-indigo-600 transition-colors hover:text-indigo-800">
+            <button type="button" onClick={switchMode} className="font-medium text-brand-600 transition-colors hover:text-brand-800">
               {copy.switchAction}
             </button>
           </p>

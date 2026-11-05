@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 export function LoadingState() {
   return (
     <div className="flex items-center justify-center gap-3 py-24 text-sm text-slate-500">
-      <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />
+      <Loader2 className="h-5 w-5 animate-spin text-brand-600" />
       Carregando seus dados...
     </div>
   );

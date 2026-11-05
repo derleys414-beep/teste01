@@ -65,7 +65,7 @@ export function DashboardPage() {
           />
         </KpiCard>
         <KpiCard label="Lucro real">
-          <p className="text-3xl font-semibold tracking-tight text-indigo-600 md:text-4xl">{formatBRL(now.profit)}</p>
+          <p className={`text-3xl font-semibold tracking-tight md:text-4xl ${now.profit < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{formatBRL(now.profit)}</p>
           <DeltaBadge
             value={percentChange(now.profit, before.profit)}
             text={formatSignedBRL(now.profit - before.profit)}
@@ -184,7 +184,7 @@ function ChannelBreakdown({ channels, sales, total }: { channels: Channel[]; sal
                   </td>
                   <td className="px-2 py-4 text-right tabular-nums text-slate-700">{formatBRL(totals.revenue)}</td>
                   <td className="px-2 py-4 text-right tabular-nums text-slate-700">{formatBRL(totals.fees)}</td>
-                  <td className="px-2 py-4 text-right font-medium tabular-nums text-indigo-700">{formatBRL(totals.profit)}</td>
+                  <td className="px-2 py-4 text-right font-medium tabular-nums ${totals.profit < 0 ? 'text-rose-600' : 'text-emerald-700'}">{formatBRL(totals.profit)}</td>
                   <td className="px-2 py-4 text-right tabular-nums">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${totals.marginPct >= 15 ? 'bg-emerald-50 text-emerald-700' : totals.marginPct > 0 ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'}`}>
                       {formatPct(totals.marginPct)}

@@ -103,19 +103,19 @@ function ProductComparison({ catalog }: { catalog: Catalog }) {
 
 function ChannelCard({ channel, result, isBest }: { channel: Channel; result: UnitBreakdown | null; isBest: boolean }) {
   return (
-    <Card className={`flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-0.5 ${isBest ? 'ring-2 ring-indigo-500/70' : ''}`}>
+    <Card className={`flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-0.5 ${isBest ? 'ring-2 ring-brand-500/70' : ''}`}>
       <div className="h-1.5" style={{ backgroundColor: channel.color }} />
       <div className="flex flex-1 flex-col gap-5 p-6">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-slate-900">{channel.name}</h3>
-          {isBest && <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Maior lucro</span>}
+          {isBest && <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700">Maior lucro</span>}
         </div>
 
         {result ? (
           <>
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro real</p>
-              <p className={`mt-1 text-2xl font-semibold tracking-tight ${result.profit < 0 ? 'text-rose-600' : 'text-indigo-600'}`}>
+              <p className={`mt-1 text-2xl font-semibold tracking-tight ${result.profit < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
                 {formatBRL(result.profit)}
               </p>
               <p className="mt-1 text-sm text-slate-500">Margem {formatPct(result.marginPct)}</p>

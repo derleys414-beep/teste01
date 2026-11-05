@@ -153,7 +153,7 @@ export function SaleFormModal({
           <div className="grid grid-cols-2 gap-4 rounded-2xl bg-slate-50 p-5">
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro real da venda</p>
-              <p className={`mt-1 text-xl font-semibold tabular-nums ${preview.profit < 0 ? 'text-rose-600' : 'text-indigo-700'}`}>
+              <p className={`mt-1 text-xl font-semibold tabular-nums ${preview.profit < 0 ? 'text-rose-600' : 'text-emerald-700'}`}>
                 {formatBRL(preview.profit * Math.max(qty, 0))}
               </p>
             </div>

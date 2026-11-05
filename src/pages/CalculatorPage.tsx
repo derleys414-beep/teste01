@@ -86,7 +86,7 @@ function ProfitCalculator({ catalog }: { catalog: Catalog }) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">Lucro real por venda</p>
-              <p className={`mt-1 text-4xl font-semibold tracking-tight md:text-5xl ${isLoss ? 'text-rose-600' : 'text-indigo-600'}`}>
+              <p className={`mt-1 text-4xl font-semibold tracking-tight md:text-5xl ${isLoss ? 'text-rose-600' : 'text-emerald-600'}`}>
                 {formatBRL(result.profit)}
               </p>
             </div>
@@ -109,7 +109,7 @@ function ProfitCalculator({ catalog }: { catalog: Catalog }) {
             <BreakdownRow label="Lucro real" value={result.profit} tone="result" />
           </ul>
 
-          <div className="rounded-2xl bg-gradient-to-br from-sky-50 to-indigo-50/60 p-5">
+          <div className="rounded-2xl bg-brand-50/60 p-5">
             <p className="text-sm font-medium text-slate-700">Preço mínimo para não ter prejuízo</p>
             <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
               {breakEven === null ? 'Impossível neste canal' : formatBRL(breakEven)}
@@ -139,12 +139,12 @@ function BreakdownRow({
     tone === 'result'
       ? value < 0
         ? 'text-rose-600'
-        : 'text-indigo-700'
+        : 'text-emerald-700'
       : tone === 'total'
         ? 'text-slate-900'
         : 'text-slate-700';
   return (
-    <li className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${tone === 'result' ? 'bg-indigo-50/60 font-semibold' : ''}`}>
+    <li className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${tone === 'result' ? 'bg-brand-50/60 font-semibold' : ''}`}>
       <span className="flex items-center gap-2 text-slate-600">
         {label}
         {hint && <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-xs text-slate-500">{hint}</span>}
