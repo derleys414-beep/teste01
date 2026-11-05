@@ -55,8 +55,18 @@ export function SaleFormModal({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+
     if (!product || !channel) {
       setError('Selecione o produto e o canal da venda.');
+      return;
+    }
+    if (!soldOn) {
+      setError('Informe a data da venda.');
+      return;
+    }
+    const parsedDate = new Date(`${soldOn}T12:00:00`);
+    if (Number.isNaN(parsedDate.getTime())) {
+      setError('Data da venda inválida.');
       return;
     }
     if (qty < 1) {
@@ -81,7 +91,7 @@ export function SaleFormModal({
         commissionPct: channel.commission_pct,
         fixedFee: channel.fixed_fee,
         taxPct: channel.tax_pct,
-        soldAt: new Date(`${soldOn}T12:00:00`).toISOString(),
+        soldAt: parsedDate.toISOString(),
       });
       onSaved();
       onClose();

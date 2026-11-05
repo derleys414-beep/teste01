@@ -12,9 +12,10 @@ import { splitByWindow } from '@/lib/periods';
 import { useAsyncData } from '@/hooks/useAsyncData';
 import type { Channel, Sale } from '@/types';
 
-type WindowDays = 30 | 90;
+type WindowDays = 7 | 30 | 90;
 
 const WINDOW_OPTIONS: { value: string; label: string }[] = [
+  { value: '7', label: '7 dias' },
   { value: '30', label: '30 dias' },
   { value: '90', label: '90 dias' },
 ];
@@ -27,7 +28,7 @@ function percentChange(current: number, previous: number): number | null {
 export function DashboardPage() {
   const catalog = useAsyncData(fetchCatalog);
   const sales = useAsyncData(fetchSales);
-  const [days, setDays] = useState<WindowDays>(30);
+  const [days, setDays] = useState<WindowDays>(7);
 
   const reloadAll = () => {
     catalog.reload();
