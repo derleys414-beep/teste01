@@ -19,8 +19,8 @@ export function SegmentedControl<T extends string>({
             type="button"
             aria-pressed={active}
             onClick={() => onChange(option.value)}
-            className={`relative h-8 rounded-lg px-3.5 text-sm font-medium transition-all duration-200 ${
-              active ? 'bg-brand-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+            className={`h-8 rounded-lg px-3.5 text-sm font-medium transition-all duration-200 ${
+              active ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             {option.label}

@@ -2,7 +2,7 @@ import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
 
 export function DeltaBadge({ value, text, caption }: { value: number | null; text: string; caption: string }) {
   if (value === null) {
-    return <span className="text-xs text-slate-400">Sem base de comparacao</span>;
+    return <span className="text-xs text-slate-400">Sem base de comparação</span>;
   }
 
   const tone =
@@ -16,7 +16,7 @@ export function DeltaBadge({ value, text, caption }: { value: number | null; tex
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
       <span>{caption}</span>
-      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium transition-all duration-300 ${tone}`}>
+      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium ${tone}`}>
         <Icon className="h-3.5 w-3.5" />
         {text}
       </span>

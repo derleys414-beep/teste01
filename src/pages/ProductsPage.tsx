@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Package, Plus, Pencil } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -17,7 +17,7 @@ export function ProductsPage() {
 
   if (catalog.loading) return <LoadingState />;
   if (catalog.error || !catalog.data) {
-    return <ErrorState message={catalog.error ?? 'Produtos indisponiveis.'} onRetry={catalog.reload} />;
+    return <ErrorState message={catalog.error ?? 'Produtos indisponíveis.'} onRetry={catalog.reload} />;
   }
 
   const data = catalog.data;
@@ -26,7 +26,7 @@ export function ProductsPage() {
     <div className="flex flex-col gap-8">
       <PageHeader
         title="Produtos"
-        subtitle="Cadastre cada SKU com custo e preco por canal. Veja o lucro real que sobra em cada marketplace."
+        subtitle="Cadastre cada SKU com custo e preço por canal. Veja o lucro real que sobra em cada marketplace."
         actions={
           <Button onClick={() => setEditing('new')} icon={<Plus className="h-4 w-4" />}>
             Novo produto
@@ -38,17 +38,12 @@ export function ProductsPage() {
         <Card>
           <EmptyState
             title="Nenhum produto cadastrado"
-            text="Comece pelo produto que voce mais vende. Leva menos de um minuto."
-            icon={
-              <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-400">
-                <Package className="h-7 w-7" />
-              </span>
-            }
+            text="Comece pelo produto que você mais vende. Leva menos de um minuto."
             action={<Button onClick={() => setEditing('new')}>Cadastrar produto</Button>}
           />
         </Card>
       ) : (
-        <ProductGrid catalog={data} onEdit={setEditing} />
+        <ProductTable catalog={data} onEdit={setEditing} />
       )}
 
       {editing && (
@@ -63,75 +58,60 @@ export function ProductsPage() {
   );
 }
 
-function ProductGrid({ catalog, onEdit }: { catalog: Catalog; onEdit: (product: Product) => void }) {
+function ProductTable({ catalog, onEdit }: { catalog: Catalog; onEdit: (product: Product) => void }) {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {catalog.products.map((product) => {
-        const channelResults = catalog.channels.map((channel) => {
-          const listing = catalog.prices.find((p) => p.product_id === product.id && p.channel_id === channel.id);
-          const result = listing ? listingBreakdown(channel, product.cost, listing) : null;
-          return { channel, result };
-        });
-        const priced = channelResults.filter((c) => c.result !== null);
-        const bestProfit = priced.length > 0 ? Math.max(...priced.map((c) => c.result!.profit)) : null;
-
-        return (
-          <Card
-            key={product.id}
-            className="group flex cursor-pointer flex-col gap-4 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div onClick={() => onEdit(product)} className="flex flex-col gap-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors group-hover:bg-brand-50 group-hover:text-brand-600">
-                    <Package className="h-5 w-5" strokeWidth={2} />
+    <Card className="overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[48rem] text-left text-sm">
+          <thead>
+            <tr className="border-b border-slate-200 bg-slate-50/60 text-xs font-medium uppercase tracking-wide text-slate-500">
+              <th className="px-6 py-4 font-medium">Produto</th>
+              <th className="px-4 py-4 text-right font-medium">Custo</th>
+              {catalog.channels.map((channel) => (
+                <th key={channel.id} className="px-4 py-4 text-right font-medium">
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: channel.color }} />
+                    {channel.name}
                   </span>
-                  <div>
-                    <p className="font-semibold text-slate-900">{product.name}</p>
-                    <p className="text-xs text-slate-400">{product.sku}</p>
-                  </div>
-                </div>
-                <span className="rounded-lg p-1.5 text-slate-300 transition-colors group-hover:text-brand-500">
-                  <Pencil className="h-4 w-4" />
-                </span>
-              </div>
-
-              <div className="flex items-center gap-4 rounded-xl bg-slate-50 px-4 py-3">
-                <div>
-                  <p className="text-xs text-slate-400">Custo</p>
-                  <p className="text-sm font-semibold text-slate-900">{formatBRL(product.cost)}</p>
-                </div>
-                {bestProfit !== null && (
-                  <div className="border-l border-slate-200 pl-4">
-                    <p className="text-xs text-slate-400">Melhor lucro</p>
-                    <p className={`text-sm font-semibold ${bestProfit < 0 ? 'text-rose-600' : 'text-brand-600'}`}>{formatBRL(bestProfit)}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {priced.length > 0 && (
-              <div className="flex flex-col gap-2 border-t border-slate-100 pt-3">
-                {channelResults.map(({ channel, result }) => (
-                  <div key={channel.id} className="flex items-center justify-between gap-2 text-xs">
-                    <span className="flex items-center gap-2 text-slate-500">
-                      <span className="h-2 w-2 rounded-full" style={{ backgroundColor: channel.color }} />
-                      {channel.name}
-                    </span>
-                    {result ? (
-                      <span className={`font-medium tabular-nums ${result.profit < 0 ? 'text-rose-600' : 'text-slate-700'}`}>
-                        {formatBRL(result.profit)} <span className="text-slate-400">({formatPct(result.marginPct)})</span>
-                      </span>
-                    ) : (
-                      <span className="text-slate-300">Sem preco</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </Card>
-        );
-      })}
-    </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {catalog.products.map((product) => (
+              <tr
+                key={product.id}
+                onClick={() => onEdit(product)}
+                className="cursor-pointer border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50/70"
+              >
+                <td className="px-6 py-4">
+                  <p className="font-medium text-slate-900">{product.name}</p>
+                  <p className="mt-0.5 text-xs text-slate-500">{product.sku}</p>
+                </td>
+                <td className="px-4 py-4 text-right tabular-nums text-slate-700">{formatBRL(product.cost)}</td>
+                {catalog.channels.map((channel) => {
+                  const listing = catalog.prices.find((p) => p.product_id === product.id && p.channel_id === channel.id);
+                  const result = listing ? listingBreakdown(channel, product.cost, listing) : null;
+                  return (
+                    <td key={channel.id} className="px-4 py-4 text-right">
+                      {result ? (
+                        <>
+                          <p className={`font-medium tabular-nums ${result.profit < 0 ? 'text-rose-600' : 'text-slate-900'}`}>
+                            {formatBRL(result.profit)}
+                          </p>
+                          <p className="mt-0.5 text-xs text-slate-500">{formatPct(result.marginPct)} de margem</p>
+                        </>
+                      ) : (
+                        <span className="text-slate-400">Sem preço</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
   );
 }

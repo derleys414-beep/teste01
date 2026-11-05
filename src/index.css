@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,59 +8,9 @@
   html {
     @apply antialiased;
     font-feature-settings: 'cv11', 'ss01';
-    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply bg-slate-50 font-sans text-slate-900;
+    @apply bg-white font-sans text-slate-900;
   }
-
-  ::selection {
-    @apply bg-brand-600/15 text-brand-900;
-  }
-}
-
-@layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .shimmer-bg {
-    background: linear-gradient(
-      90deg,
-      rgba(241, 245, 249, 0) 0%,
-      rgba(241, 245, 249, 0.8) 50%,
-      rgba(241, 245, 249, 0) 100%
-    );
-    background-size: 200% 100%;
-  }
-
-  .glass {
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-  }
-
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-/* Premium scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.2);
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.35);
 }
