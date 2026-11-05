@@ -11,15 +11,22 @@ export const REPORT_PERIOD_OPTIONS: { value: ReportPeriod; label: string }[] = [
   { value: 'all', label: 'Tudo' },
 ];
 
+function endOfToday(now: number): number {
+  const d = new Date(now);
+  d.setHours(23, 59, 59, 999);
+  return d.getTime();
+}
+
 export function splitByWindow(sales: Sale[], days: number, now: number) {
-  const start = now - days * DAY_MS;
-  const previousStart = now - 2 * days * DAY_MS;
+  const end = endOfToday(now);
+  const start = end - days * DAY_MS;
+  const previousStart = start - days * DAY_MS;
   const current: Sale[] = [];
   const previous: Sale[] = [];
 
   for (const sale of sales) {
     const time = Date.parse(sale.sold_at);
-    if (time >= start && time <= now) current.push(sale);
+    if (time >= start && time <= end) current.push(sale);
     else if (time >= previousStart && time < start) previous.push(sale);
   }
 
@@ -29,13 +36,14 @@ export function splitByWindow(sales: Sale[], days: number, now: number) {
 export function filterByPeriod(sales: Sale[], period: ReportPeriod, now: number): Sale[] {
   if (period === 'all') return sales;
 
+  const end = endOfToday(now);
   const start =
     period === 'month'
       ? new Date(new Date(now).getFullYear(), new Date(now).getMonth(), 1).getTime()
-      : now - Number.parseInt(period, 10) * DAY_MS;
+      : end - Number.parseInt(period, 10) * DAY_MS;
 
   return sales.filter((sale) => {
     const time = Date.parse(sale.sold_at);
-    return time >= start && time <= now;
+    return time >= start && time <= end;
   });
 }
