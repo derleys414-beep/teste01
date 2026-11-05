@@ -117,17 +117,22 @@ export type SaleInput = {
 };
 
 export async function insertSale(input: SaleInput): Promise<void> {
-  const { error } = await supabase.from('sales').insert({
-    product_id: input.productId,
-    channel_id: input.channelId,
-    quantity: input.quantity,
-    unit_price: input.unitPrice,
-    unit_cost: input.unitCost,
-    unit_shipping: input.unitShipping,
-    commission_pct: input.commissionPct,
-    fixed_fee: input.fixedFee,
-    tax_pct: input.taxPct,
-    sold_at: input.soldAt,
-  });
+  const { data, error } = await supabase
+    .from('sales')
+    .insert({
+      product_id: input.productId,
+      channel_id: input.channelId,
+      quantity: input.quantity,
+      unit_price: input.unitPrice,
+      unit_cost: input.unitCost,
+      unit_shipping: input.unitShipping,
+      commission_pct: input.commissionPct,
+      fixed_fee: input.fixedFee,
+      tax_pct: input.taxPct,
+      sold_at: input.soldAt,
+    })
+    .select('id')
+    .maybeSingle();
   if (error) throw error;
+  if (!data) throw new Error('Não foi possível registrar a venda. Verifique se sua conta está ativa e se o produto e o canal pertencem a você.');
 }
