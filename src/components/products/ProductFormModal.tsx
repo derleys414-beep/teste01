@@ -148,7 +148,7 @@ export function ProductFormModal({
                     Lucro real
                   </span>
                   {result ? (
-                    <span className={`font-semibold tabular-nums ${result.profit < 0 ? 'text-rose-600' : 'text-indigo-700'}`}>
+                    <span className={`font-semibold tabular-nums ${result.profit < 0 ? 'text-rose-600' : 'text-emerald-700'}`}>
                       {formatBRL(result.profit)} · {formatPct(result.marginPct)}
                     </span>
                   ) : (
